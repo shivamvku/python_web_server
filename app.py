@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template,redirect,url_for,jsonify, request, make_response,session,flash,logging
 import os ,jwt ,datetime
 from flask_bootstrap import Bootstrap
@@ -14,11 +15,11 @@ import paho.mqtt.client as mqtt
 
 app = Flask(__name__)
 mqttc=mqtt.Client()
-mqttc.connect("localhost",1883,60)
+#mqttc.connect("localhost",1883,60)
 
 app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = 'thisissecreat'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/pi/Desktop/demologin/database/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/shivam/flaskprj/python_web_server/flaskdb.db'
 Bootstrap(app)
 db =SQLAlchemy(app)
 login_manager = LoginManager()
@@ -78,7 +79,7 @@ def index():
 
 @app.route('/login', methods = ['GET' , 'POST'])
 def login():
-	print db
+#	print db
 	form = LoginForm()
 	if form.validate_on_submit():
 		user= User.query.filter_by(username=form.username.data).first()
@@ -180,4 +181,4 @@ def logout():
 
 
 if __name__ == '__main__':
-   app.run(host='192.168.201.80', port=8000, debug=True)
+   app.run(host = 'localhost',debug = True)
