@@ -3,7 +3,7 @@ from flask import Flask, render_template,redirect,url_for,jsonify, request, make
 import os ,jwt ,datetime
 from flask_bootstrap import Bootstrap
 from functools import wraps
-from flask_wtf import FlaskForm
+from flask_wtf import Form
 from wtforms import StringField , PasswordField ,BooleanField
 from wtforms.validators import InputRequired ,Email ,Length
 from flask_sqlalchemy import SQLAlchemy
@@ -11,21 +11,25 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager , UserMixin , login_user , login_required,logout_user,current_user
 import paho.mqtt.client as mqtt
 
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-mqttc=mqtt.Client()
+# mqttc=mqtt.Client()
 #mqttc.connect("localhost",1883,60)
 
 app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = 'thisissecreat'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/shivam/flaskprj/python_web_server/flaskdb.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/shivam/flaskprj/python_web_server/flaskdb.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///C/Users/shivam/Desktop/python_web_server/flaskdb.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/shivam/Desktop/python_web_server/flaskdb.db'
+# C:/Users/shivam/Desktop/python_web_server
 Bootstrap(app)
 db =SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-mqttc.loop_start()
+# mqttc.loginoop_start()
 
 # Create a dictionary called pins to store the pin number, name, and pin state:
 pins = {
@@ -44,7 +48,7 @@ templateData = {'pins' : pins }
 
 
 
-class User(UserMixin,db.Model):
+class User(db.Model):
 	id = db.Column(db.Integer,primary_key =True)
 	username = db.Column(db.String(15), unique =True)
 	email = db.Column(db.String(80), unique =True)		
@@ -55,12 +59,12 @@ def load_user(user_id):
 	return User.query.get(int(user_id))
 
 
-class LoginForm(FlaskForm):
+class LoginForm(Form):
 	username = StringField('username',validators=[InputRequired(),Length(min=4,max=15)])
 	password = PasswordField('password',validators=[InputRequired(),Length(min=8,max=80)])
 	remember = BooleanField('remember me')
 
-class RegisterForm(FlaskForm):
+class RegisterForm(Form):
 	email = StringField('email',validators=[InputRequired(),Email(message = "Invalid email"), Length(max = 50)])	
 	username = StringField('username',validators=[InputRequired(),Length(min=4,max=15)])
 	password = PasswordField('password',validators=[InputRequired(),Length(min=8,max=80)])
@@ -181,4 +185,4 @@ def logout():
 
 
 if __name__ == '__main__':
-   app.run(host = 'localhost',debug = True)
+   app.run(host = '0.0.0.0',port = 8080,debug = True)
