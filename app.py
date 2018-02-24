@@ -15,14 +15,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-# mqttc=mqtt.Client()
-#mqttc.connect("localhost",1883,60)
+mqttc=mqtt.Client()
+mqttc.connect("localhost",1883,60)
 
 app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = 'thisissecreat'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/shivam/flaskprj/python_web_server/flaskdb.db'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///C/Users/shivam/Desktop/python_web_server/flaskdb.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/shivam/Desktop/python_web_server/flaskdb.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/vineet/Documents/vineet/demo/python_web_server/flaskdb.db'
 # C:/Users/shivam/Desktop/python_web_server
 Bootstrap(app)
 db =SQLAlchemy(app)
@@ -48,7 +48,7 @@ templateData = {'pins' : pins }
 
 
 
-class User(db.Model):
+class User(UserMixin,db.Model):
 	id = db.Column(db.Integer,primary_key =True)
 	username = db.Column(db.String(15), unique =True)
 	email = db.Column(db.String(80), unique =True)		
@@ -83,7 +83,7 @@ def index():
 
 @app.route('/login', methods = ['GET' , 'POST'])
 def login():
-#	print db
+#	print (db)
 	form = LoginForm()
 	if form.validate_on_submit():
 		user= User.query.filter_by(username=form.username.data).first()
@@ -185,4 +185,4 @@ def logout():
 
 
 if __name__ == '__main__':
-   app.run(host = '0.0.0.0',port = 8080,debug = True)
+   app.run(host = '192.168.43.97',port = 8080,debug = True)
