@@ -3,7 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-// Change the credentials below, so your ESP8266 connects to your router
+// Change the credentials below, so your ESP8266 connects to your internet
 const char* ssid = "Design@Digital_lync_2.4";
 const char* password = "passw0rd@123";
 
@@ -21,7 +21,7 @@ const int ledGPIO4 = 4;
 const int ledGPIO0 = 0;
 const int ledGPIO2 = 2;
 
-// Don't change the function below. This functions connects your ESP8266 to your router
+// Don't change the function below. This functions connects your ESP8266 to your internet
 void setup_wifi() {
   delay(10);
   // We start by connecting to a WiFi network
@@ -195,19 +195,19 @@ void loop() {
     reconnect();
   }
   if(!client.loop())
-     /*
-     YOU  NEED TO CHANGE THIS NEXT LINE, IF YOU'RE HAVING PROBLEMS WITH MQTT MULTIPLE CONNECTIONS
-     To change the ESP device ID, you will have to give a unique name to the ESP8266.
-     Here's how it looks like now:
-       client.connect("ESP8266Client");
-     If you want more devices connected to the MQTT broker, you can do it like this:
-       client.connect("ESPOffice");
-     Then, for the other ESP:
-       client.connect("ESPGarage");
-      That should solve your MQTT multiple connections problem
+     
+     // YOU  NEED TO CHANGE THIS NEXT LINE, IF YOU'RE HAVING PROBLEMS WITH MQTT MULTIPLE CONNECTIONS
+     // To change the ESP device ID, you will have to give a unique name to the ESP8266.
+     // Here's how it looks like now:
+     //   client.connect("ESP8266Client");
+     // If you want more devices connected to the MQTT broker, you can do it like this:
+     //   client.connect("ESPOffice");
+     // Then, for the other ESP:
+     //   client.connect("ESPGarage");
+     //  That should solve your MQTT multiple connections problem
 
-     THE SECTION IN recionnect() function should match your device name
-    */
+     // THE SECTION IN recionnect() function should match your device name
+    
     client.connect("ESP8266Client");
 }
 
